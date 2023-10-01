@@ -1,7 +1,7 @@
 <script lang="ts">
   let count = 0;
 
-  function handleClick() {
+  function handleClick(foo) {
     count += 1;
   }
 </script>
