@@ -3,5 +3,5 @@
   let counter = 0
 </script>
 
-<h1>Web</h1>
+<h1>Web: This is without the docs</h1>
 <MyCounterButton />
