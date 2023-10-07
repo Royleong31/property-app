@@ -1,0 +1,1 @@
+ALTER TABLE "cities" ADD COLUMN "house" varchar(256);

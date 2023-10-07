@@ -1,32 +1,18 @@
-# Turborepo Svelte starter
+To reproduce the issue:
 
-This is an official starter Turborepo.
+run:
 
-## Using this example
+- pnpm i
+- pnpm build
 
-Run the following command:
+Expected error:
 
-```sh
-npx create-turbo@latest -e with-svelte
 ```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [svelte-kit](https://kit.svelte.dev/) app
-- `web`: another [svelte-kit](https://kit.svelte.dev/) app
-- `ui`: a stub Svelte component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-plugin-svelte` and `eslint-config-prettier`)
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+api:build: webpack 5.74.0 compiled with 1 error in 2833 ms
+api:build: D:\00 SOFTWARE\TEMP\turborepo-nestjs\packages\nest-config\src\index.ts:1
+api:build: export * from "./config.service";
+api:build: ^^^^^^
+api:build:
+api:build: SyntaxError: Unexpected token 'export'
+api:build:     at Object.compileFunction (node:vm:352:18)
+```

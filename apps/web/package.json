@@ -12,9 +12,11 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "dependencies": {
-    "ui": "*"
+    "@myapp/ui": "*",
+    "axios": "^1.5.1"
   },
   "devDependencies": {
+    "@myapp/types-contract": "workspace:*",
     "@sveltejs/adapter-auto": "latest",
     "@sveltejs/kit": "latest",
     "eslint-config-custom": "*",
