@@ -1,7 +1,12 @@
 <script lang="ts">
   import { base } from '$app/paths';
+  import LoginModal from '../components/modals/LoginModal.svelte';
+  import Modal from '../components/modals/Modal.svelte';
+  import RegisterModal from '../components/modals/RegisterModal.svelte';
   const handleLogin = () => {};
   const handleRegistration = () => {};
+
+  let showModal = false;
 </script>
 
 <div class="root">
@@ -28,6 +33,13 @@
   <main>
     <slot />
   </main>
+
+  <LoginModal bind:showModal />
+  <button
+    on:click={() => {
+      showModal = true;
+    }}>Open modal</button
+  >
 
   <footer>
     <div class="container">
@@ -72,6 +84,7 @@
     line-height: 25px;
     font-family: Saira;
     text-transform: capitalize;
+    text-align: center;
   }
 
   /* TODO: Move this to a shared style */

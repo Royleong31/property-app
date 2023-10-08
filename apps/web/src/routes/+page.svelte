@@ -2,7 +2,7 @@
   import { base } from '$app/paths';
   import type { HomePageProps } from '$lib/types/routes/root';
   import type { ComponentProps } from 'svelte';
-  import ListingsContainer from '../components/ListingsContainer.svelte';
+  import ListingsContainer from '../components/pages/ListingsContainer.svelte';
 
   const priceSelectOptions = [
     '$0 - $200,000',
