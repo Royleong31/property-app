@@ -1,20 +1,22 @@
 <script lang="ts">
-  export let showModal: boolean;
+  import { createEventDispatcher } from 'svelte';
 
   let dialog: HTMLDialogElement;
+  const dispatch = createEventDispatcher();
 
-  $: if (dialog && showModal) dialog.showModal();
+  function closeModal() {
+    dialog.close();
+    dispatch('close');
+  }
+
+  $: if (dialog) dialog.showModal();
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<dialog
-  bind:this={dialog}
-  on:close={() => (showModal = false)}
-  on:click|self={() => dialog.close()}
->
+<dialog bind:this={dialog} on:close={closeModal} on:click|self={closeModal}>
   <div class="root" on:click|stopPropagation>
     <!-- svelte-ignore a11y-autofocus -->
-    <button class="closeBtn" autofocus on:click={() => dialog.close()}>X</button>
+    <button class="closeBtn" autofocus on:click={closeModal}>X</button>
 
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div>

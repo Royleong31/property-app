@@ -1,8 +1,6 @@
 <script lang="ts">
   import Modal from './Modal.svelte';
 
-  export let showModal = false;
-
   let fullName = '';
   let phoneNumber = '';
   let email = '';
@@ -12,7 +10,7 @@
   const handleLogin = () => {};
 </script>
 
-<Modal bind:showModal>
+<Modal on:close>
   <h2 slot="header" class="logo">Register</h2>
 
   <form on:submit={handleLogin} class="loginModal">

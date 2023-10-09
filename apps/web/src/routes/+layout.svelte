@@ -1,12 +1,14 @@
 <script lang="ts">
   import { base } from '$app/paths';
+  import { ModalType } from '$lib/enums/modals';
   import LoginModal from '../components/modals/LoginModal.svelte';
-  import Modal from '../components/modals/Modal.svelte';
   import RegisterModal from '../components/modals/RegisterModal.svelte';
-  const handleLogin = () => {};
-  const handleRegistration = () => {};
 
-  let showModal = false;
+  const onClose = () => {
+    modalType = ModalType.NONE;
+  };
+  let modalType = ModalType.NONE;
+
 </script>
 
 <div class="root">
@@ -24,8 +26,18 @@
       </div>
 
       <div class="headerRightContainer">
-        <button on:click={handleLogin} class="loginBtn">Log In</button>
-        <button on:click={handleRegistration} class="registerBtn">Register</button>
+        <button
+          on:click={() => {
+            modalType = ModalType.LOGIN;
+          }}
+          class="loginBtn">Log In</button
+        >
+        <button
+          on:click={() => {
+            modalType = ModalType.REGISTER;
+          }}
+          class="registerBtn">Register</button
+        >
       </div>
     </div>
   </header>
@@ -34,12 +46,11 @@
     <slot />
   </main>
 
-  <LoginModal bind:showModal />
-  <button
-    on:click={() => {
-      showModal = true;
-    }}>Open modal</button
-  >
+  {#if modalType === ModalType.LOGIN}
+    <LoginModal on:close={onClose} />
+  {:else if modalType === ModalType.REGISTER}
+    <RegisterModal on:close={onClose} />
+  {/if}
 
   <footer>
     <div class="container">
