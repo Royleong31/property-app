@@ -7,6 +7,8 @@
   export let bedroomCount: number;
   export let area: number;
   export let imgSrc: string;
+
+  let isLiked = false;
 </script>
 
 <div class="card">
@@ -16,7 +18,12 @@
   <div class="right">
     <div class="nameContainer">
       <h3 class="name">{name}</h3>
-      <button class="like">LIKE</button>
+      <button
+        class="like"
+        on:click={() => {
+          isLiked = !isLiked;
+        }}><img src="{base}/icons/like-{isLiked ? '' : 'un'}filled.svg" alt="" /></button
+      >
     </div>
     <p class="address">{address}</p>
     <p class="price">

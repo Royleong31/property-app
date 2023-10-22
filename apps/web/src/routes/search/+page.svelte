@@ -133,6 +133,6 @@
     margin: 32px 0;
     display: flex;
     flex-direction: column;
-    row-gap: 16px;
+    row-gap: 24px;
   }
 </style>
