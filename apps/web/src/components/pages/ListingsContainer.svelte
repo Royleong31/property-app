@@ -1,6 +1,5 @@
 <script lang="ts">
   import { base } from '$app/paths';
-
   interface Listing {
     price: number;
     name: string;

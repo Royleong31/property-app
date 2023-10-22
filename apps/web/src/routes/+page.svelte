@@ -112,15 +112,6 @@
 </section>
 
 <style lang="scss">
-  .container {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1400px;
-    margin: auto;
-  }
-
   .landing {
     display: grid;
     grid-template-columns: 4fr 3fr;
