@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PropertySearchProps } from '$lib/types/routes/propertySearch';
-  import SearchResult from '../../components/pages/SearchResult.svelte';
+  import SearchResult from '../../../components/pages/SearchResult.svelte';
   let searchInput = '';
   import { base } from '$app/paths';
   import type { ComponentProps } from 'svelte';
