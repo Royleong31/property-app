@@ -1,5 +1,6 @@
 <script lang="ts">
   import DisplayImage from '../../components/forms/DisplayImage.svelte';
+  import authStore from '$lib/store/auth';
 
   export let data;
   $: ({ supabase } = data);
@@ -15,10 +16,6 @@
     GYM = 'GYM',
   }
 
-  let fullName = '';
-  let phoneNumber = '';
-  let email = '';
-  let NRIC = '';
   let postal = '';
   let streetName = '';
   let unitNum = '';
@@ -32,30 +29,16 @@
   let url = '';
 
   const submitHandler = async () => {
-    console.log(
-      fullName,
-      phoneNumber,
-      email,
-      NRIC,
-      postal,
-      streetName,
-      unitNum,
-      typeOfProperty,
-      floorLevel,
-      noOfBedrooms,
-      noOfBathrooms,
-      floorArea,
-      price,
-      url,
-    );
+    if (!$authStore?.id) {
+      // TODO: Open login modal
+      alert('you are not logged in');
+      return;
+    }
 
     const result = await supabase
       .from('property_for_sale')
       .insert({
-        full_name: fullName,
-        phone_number: phoneNumber,
-        email,
-        nric: NRIC,
+        seller_id: $authStore.id,
         postal_code: postal,
         street_name: streetName,
         unit_number: unitNum,
@@ -74,14 +57,10 @@
         image_url: url,
         property_id: result.data[0].id,
       });
-      console.log(result2);
+
       if (result2) {
         alert('success');
 
-        fullName = '';
-        phoneNumber = '';
-        email = '';
-        NRIC = '';
         postal = '';
         streetName = '';
         unitNum = '';
@@ -116,22 +95,7 @@
 </div>
 
 <form class="body" on:submit|preventDefault={submitHandler}>
-  <h3>Personal Information</h3>
-  <hr />
-
-  <label for="fullName">Full Name:</label>
-  <input bind:value={fullName} type="text" id="fullName" />
-
-  <label for="phoneNumber">Phone Number:</label>
-  <input bind:value={phoneNumber} type="text" id="phoneNumber" />
-
-  <label for="email">Email:</label>
-  <input bind:value={email} type="email" id="email" />
-
-  <label for="NRIC">NRIC/FIN:</label>
-  <input bind:value={NRIC} type="text" id="NRIC" />
-
-  <h3>Property's Information</h3>
+  <h3 class="title">Property Information</h3>
   <hr />
 
   <label for="postal">Postal code:</label>
@@ -239,7 +203,8 @@
     margin: auto;
 
     & > p {
-      font-size: 12px;
+      font-size: 10px;
+      margin-top: 8px;
     }
   }
 
@@ -248,19 +213,23 @@
     margin: auto;
     display: grid;
     grid-template-columns: max-content 1fr;
-    gap: 12px;
+    gap: 24px;
 
     & > h3,
     & > hr {
       grid-column: 1 / -1;
     }
 
+    .title {
+      font-size: 20px;
+    }
+
     & > input {
       background: #f2f7fb;
-      height: 32px;
       border: 1px solid #bbb;
       border-radius: 6px;
       flex: 1;
+      padding: 5px 12px;
     }
 
     hr {

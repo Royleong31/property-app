@@ -19,9 +19,10 @@
     console.log('inside chat handler');
     if (!$authStore?.id) {
       alert('you are not logged in');
+      // TODO: Open login modal
       return;
     }
-
+    // TODO: Don't allow user to chat with themselves
     const existingRecord = await supabase
       .from('chat')
       .select('id')
