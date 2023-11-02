@@ -7,6 +7,7 @@
   import { onMount } from 'svelte';
   import { SUPABASE_AUTH } from '$lib/constants';
   import authStore from '$lib/store/auth';
+  import ChangePasswordModal from '../components/modals/ChangePasswordModal.svelte';
 
   export let data;
 
@@ -47,6 +48,7 @@
         <a href="/properties">Properties</a>
         <a href="/sell">Sell</a>
         <a href="/chat">Chat</a>
+        <a href="/prediction">Prediction</a>
       </div>
 
       <div class="headerRightContainer">
@@ -56,6 +58,12 @@
               supabase.auth.signOut();
             }}
             class="registerBtn">Sign Out</button
+          >
+          <button
+            on:click={() => {
+              modalType = ModalType.CHANGE_PASSWORD;
+            }}
+            class="registerBtn">Change PW</button
           >
         {:else}
           <button
@@ -83,6 +91,8 @@
     <LoginModal {supabase} redirectUrl={`${originUrl}/auth/callback`} on:close={onClose} />
   {:else if modalType === ModalType.REGISTER}
     <RegisterModal {supabase} on:close={onClose} />
+  {:else if modalType === ModalType.CHANGE_PASSWORD}
+    <ChangePasswordModal {supabase} on:close={onClose} />
   {/if}
 
   <footer>
