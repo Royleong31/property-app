@@ -49,6 +49,7 @@
         <a href="/sell">Sell</a>
         <a href="/chat">Chat</a>
         <a href="/prediction">Prediction</a>
+        <a href="/likes">Likes</a>
       </div>
 
       <div class="headerRightContainer">

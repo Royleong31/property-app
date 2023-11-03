@@ -64,33 +64,33 @@
   let predictedPrice = 0;
 
   let town = towns[0];
-  let room = bedroomSelectOptions[0];
-
+  let room = 4;
+  // 165.22.109.188
+  const base_url = 'http://167.71.194.141';
   $: {
-    fetch('http://165.22.109.188/estimate_price', {
+    fetch(`${base_url}/estimate_price`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        town: 'ang mo kio',
-        num_rooms: 4,
+        town,
+        num_rooms: +room,
       }),
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res);
         predictedPrice = res.predicted_price;
       });
 
-    fetch('http://165.22.109.188/get_prices', {
+    fetch(`${base_url}/get_prices`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        town: 'ang mo kio',
-        num_rooms: 4,
+        town,
+        num_rooms: +room,
       }),
     })
       .then(res => res.json())

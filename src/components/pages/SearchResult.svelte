@@ -12,8 +12,52 @@
   export let id: string;
   export let supabase: SupabaseClient;
   import authStore from '$lib/store/auth';
+  import { onMount } from 'svelte';
 
   let isLiked = false;
+
+  const checkIsPropertyLiked = async (userId: string) => {
+    const result = await supabase
+      .from('likes')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .eq('property_id', id);
+
+    return (result?.data?.length ?? 0) > 0;
+  };
+
+  authStore.subscribe(async val => {
+    if (val?.id) {
+      isLiked = await checkIsPropertyLiked(val.id);
+    }
+  });
+
+  const likeHandler = async () => {
+    if (!$authStore?.id) {
+      alert('you are not logged in');
+      return;
+    }
+
+    // Optimistic updating
+    if (isLiked) {
+      const result = await supabase.from('likes').delete().eq('property_id', id);
+      if (!result.error) {
+        console.log('unlike success');
+        isLiked = false;
+      }
+    } else {
+      const result = await supabase
+        .from('likes')
+        .insert([{ property_id: id, user_id: $authStore.id }]);
+      if (!result.error) {
+        console.log('like success');
+        isLiked = true;
+      }
+    }
+
+    isLiked = await checkIsPropertyLiked($authStore.id);
+  };
 
   const goToChatHandler = async () => {
     console.log('inside chat handler');
@@ -63,9 +107,9 @@
         <h3 class="name">{name}</h3>
         <button
           class="like"
-          on:click={e => {
+          on:click|preventDefault={e => {
             e.preventDefault();
-            isLiked = !isLiked;
+            likeHandler();
           }}><img src="{base}/icons/like-{isLiked ? '' : 'un'}filled.svg" alt="" /></button
         >
       </div>
