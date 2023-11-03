@@ -1,6 +1,7 @@
 <script lang="ts">
   import Chart from 'svelte-frappe-charts';
   import LandingComponent from '../../components/LandingComponent.svelte';
+  import Layout from '../+layout.svelte';
   const bedroomSelectOptions = ['1', '2', '3', '4', '5', '6'];
 
   const towns = [
@@ -99,13 +100,27 @@
         const datasets: { values: number[] }[] = [{ values: [] }];
 
         res.past_prices.forEach((val: any) => {
-          labels.push(val.quarter);
-          datasets[0].values.push(val.price);
+          if (!isNaN(val.price)) {
+            labels.push(val.quarter);
+            datasets[0].values.push(val.price);
+          }
         });
+
+        console.log(labels, datasets[0].values);
 
         data = {
           labels,
           datasets,
+        };
+      })
+      .catch(() => {
+        data = {
+          labels: [],
+          datasets: [
+            {
+              values: [],
+            },
+          ],
         };
       });
   }
@@ -134,7 +149,14 @@
       </select>
     </div>
   </div>
-  <Chart {data} type="line" />
+
+  {#if data.labels.length === 0}
+    <div class="noData">
+      <p>No data available</p>
+    </div>
+  {:else}
+    <Chart {data} type="line" />
+  {/if}
 
   <h3 class="predictedPrice">
     Predicted price: S{new Intl.NumberFormat('en-SG', {
@@ -159,6 +181,14 @@
   .selectorContainer {
     display: flex;
     column-gap: 50px;
+  }
+
+  .noData {
+    display: grid;
+    place-items: center;
+    height: 200px;
+    border: 1px dashed #333;
+    margin: 20px 0;
   }
 
   .selector {
