@@ -21,7 +21,7 @@
     }
 
     const { data, error } = await supabase.auth.updateUser({ password: newPassword });
-    console.log(data.user);
+
     if (data && data.user) {
       errorMsg = '';
       alert('Password changed successfully');
