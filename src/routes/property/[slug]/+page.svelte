@@ -4,8 +4,59 @@
   export let data;
   const propertyData = data.propertyData;
 
+  let price = '';
+  let loanAmount = '';
+  let interestRate = '';
+  let tenure = '';
+
+  let monthlyRepayment = 0;
+  let principalAmt = 0;
+  let interestAmt = 0;
+  let downpaymentAmt = 0;
+  let downpaymentPercentage = '0';
+  let loanPercentage = '0';
+  let percentagePrincipal = '0';
+  let percentageInterest = '0';
+  let loanAmountVal = '0'
+
   function capitalizeFirstLetter(input: string) {
     return input.charAt(0).toUpperCase() + input.slice(1);
+  }
+
+  function submitHandler() {
+    const priceNum = Number(price);
+    const loanAmountNum = Number(loanAmount);
+    const interestRateNum = Number(interestRate);
+    const tenureNum = Number(tenure);
+
+    const monthlyInterestRate = interestRateNum / 12 / 100;
+    const numberOfMonths = tenureNum * 12;
+
+    monthlyRepayment =
+      (loanAmountNum * (monthlyInterestRate * (1 + monthlyInterestRate) ** numberOfMonths)) /
+      ((1 + monthlyInterestRate) ** numberOfMonths - 1);
+
+    const totalAmtPaid = monthlyRepayment * numberOfMonths;
+    principalAmt = loanAmountNum / numberOfMonths;
+    interestAmt = monthlyRepayment - principalAmt;
+    loanAmountVal = loanAmount
+
+    downpaymentAmt = priceNum - loanAmountNum;
+    downpaymentPercentage = ((downpaymentAmt / priceNum) * 100).toFixed(2);
+    loanPercentage = (100 - +downpaymentPercentage).toFixed(2);
+    percentagePrincipal = ((loanAmountNum / totalAmtPaid) * 100).toFixed(2);
+    percentageInterest = (100 - +percentagePrincipal).toFixed(2);
+
+    console.log({
+      monthlyRepayment,
+      principalAmt,
+      interestAmt,
+      downpaymentAmt,
+      downpaymentPercentage,
+      totalAmtPaid,
+      loanPercentage,
+      percentagePrincipal,
+    });
   }
 
   console.log(propertyData);
@@ -102,25 +153,43 @@
   <hr class="divider" />
 
   <h5>Estimated Mortgage</h5>
-  <div class="mortgageContainer">
+  <form class="mortgageContainer" on:submit|preventDefault={submitHandler}>
     <div class="mortgageCalculator">
       <h6>Mortgage Breakdown</h6>
       <div class="subheader">
         <p class="left">Est. Monthly Repayment</p>
-        <p class="right">S$ 9,130 / mo</p>
+        <p class="right">
+          S{new Intl.NumberFormat('en-SG', {
+            style: 'currency',
+            currency: 'SGD',
+            minimumFractionDigits: 2,
+          }).format(monthlyRepayment)} / mo
+        </p>
       </div>
       <div class="percentageContainer">
-        <div class="filled" style="width:31%">
-          <p>31%</p>
+        <div class="filled" style="width:{percentagePrincipal}%">
+          <p>{percentagePrincipal}%</p>
         </div>
-        <div class="unfilled" style="width:69%">
-          <p>69%</p>
+        <div class="unfilled" style="width:{percentageInterest}%">
+          <p>{percentageInterest}%</p>
         </div>
       </div>
 
       <div class="amounts">
-        <p class="amount">S$2,858 Principal</p>
-        <p class="amount">S$6,272 Interest</p>
+        <p class="amount">
+          S{new Intl.NumberFormat('en-SG', {
+            style: 'currency',
+            currency: 'SGD',
+            minimumFractionDigits: 2,
+          }).format(principalAmt)} Principal
+        </p>
+        <p class="amount">
+          S{new Intl.NumberFormat('en-SG', {
+            style: 'currency',
+            currency: 'SGD',
+            minimumFractionDigits: 2,
+          }).format(interestAmt)} Interest
+        </p>
       </div>
 
       <hr />
@@ -128,20 +197,32 @@
       <h6>Upfront Costs</h6>
       <div class="subheader">
         <p class="left">Total Downpayment</p>
-        <p class="right">S$ 634,200</p>
+        <p class="right">
+          S{new Intl.NumberFormat('en-SG', {
+            style: 'currency',
+            currency: 'SGD',
+            minimumFractionDigits: 2,
+          }).format(downpaymentAmt)}
+        </p>
       </div>
       <div class="percentageContainer">
-        <div class="filled" style="width:31%">
-          <p>31%</p>
+        <div class="filled" style="width:{downpaymentPercentage}%">
+          <p>{downpaymentPercentage}%</p>
         </div>
-        <div class="unfilled" style="width:69%">
-          <p>69%</p>
+        <div class="unfilled" style="width:{loanPercentage}%">
+          <p>{loanPercentage}%</p>
         </div>
       </div>
 
       <div class="amounts">
         <p class="amount">Downpayment</p>
-        <p class="amount">S$1,432,32 Loan Amount<br />at 75% Loan-to-Amount</p>
+        <p class="amount">
+          S{new Intl.NumberFormat('en-SG', {
+            style: 'currency',
+            currency: 'SGD',
+            minimumFractionDigits: 2,
+          }).format(+loanAmount)} Loan Amount<br />at {loanPercentage}% Loan-to-Amount
+        </p>
       </div>
     </div>
 
@@ -150,7 +231,7 @@
         <label for="price">Property Price</label>
         <div class="inputContainer">
           <div class="unit"><p>S$</p></div>
-          <input type="text" id="price" />
+          <input type="text" id="price" bind:value={price} />
         </div>
       </div>
 
@@ -158,7 +239,7 @@
         <label for="loan">Loan Amount</label>
         <div class="inputContainer">
           <div class="unit"><p>S$</p></div>
-          <input type="text" id="loan" />
+          <input type="text" id="loan" bind:value={loanAmount} />
         </div>
       </div>
 
@@ -166,7 +247,7 @@
         <label for="interestRate">Interest Rate</label>
         <div class="inputContainer">
           <div class="unit"><p>%</p></div>
-          <input type="text" id="interestRate" />
+          <input type="text" id="interestRate" bind:value={interestRate} />
         </div>
       </div>
 
@@ -174,11 +255,17 @@
         <label for="loanTenure">Loan Tenure</label>
         <div class="inputContainer">
           <div class="unit"><p>Yrs</p></div>
-          <input type="text" id="loanTenure" />
+          <input type="text" id="loanTenure" bind:value={tenure} />
         </div>
       </div>
+
+      <button
+        class="calculateBtn"
+        disabled={price === '' || loanAmount === '' || interestRate === '' || tenure === ''}
+        >Calculate</button
+      >
     </div>
-  </div>
+  </form>
 
   <div />
 </div>
@@ -455,6 +542,20 @@
           padding: 0 10px;
           font-size: 20px;
         }
+      }
+    }
+
+    .calculateBtn {
+      margin: auto;
+      grid-column: 1/ -1;
+      width: 100%;
+      padding: 10px;
+      background: #606c38;
+      color: white;
+      border-radius: 6px;
+
+      &:disabled {
+        opacity: 0.6;
       }
     }
   }
