@@ -63,7 +63,7 @@
 </script>
 
 <LandingComponent />
-<section class="landing">
+<section class="buySection">
   <div class="buy">
     <p>Buy</p>
     <form on:submit|preventDefault={submitHandler}>
@@ -95,18 +95,16 @@
   </div>
 </section>
 
-<div style="height: 200px;" />
-
 <section class="listings">
   <ListingsContainer {listingsArr} />
 </section>
 
 <style lang="scss">
+  .buySection {
+    background: #fefae0;
+    padding: 20px 0;
+  }
   .buy {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 50%);
     background: #283618bd;
     text-align: center;
     width: 900px;
@@ -115,6 +113,7 @@
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
+    margin: auto;
 
     .inputContainer {
       position: relative;

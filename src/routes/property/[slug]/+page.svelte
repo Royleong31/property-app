@@ -1,5 +1,7 @@
 <script lang="ts">
   import { base } from '$app/paths';
+  import authStore from '$lib/store/auth.js';
+  import BoostListing from '../../../components/pages/BoostListing.svelte';
 
   export let data;
   const propertyData = data.propertyData;
@@ -17,7 +19,11 @@
   let loanPercentage = '0';
   let percentagePrincipal = '0';
   let percentageInterest = '0';
-  let loanAmountVal = '0'
+  let loanAmountVal = '0';
+
+  let showBoostModal = false;
+
+  $: isOwner = $authStore?.id === propertyData.seller_id;
 
   function capitalizeFirstLetter(input: string) {
     return input.charAt(0).toUpperCase() + input.slice(1);
@@ -39,7 +45,7 @@
     const totalAmtPaid = monthlyRepayment * numberOfMonths;
     principalAmt = loanAmountNum / numberOfMonths;
     interestAmt = monthlyRepayment - principalAmt;
-    loanAmountVal = loanAmount
+    loanAmountVal = loanAmount;
 
     downpaymentAmt = priceNum - loanAmountNum;
     downpaymentPercentage = ((downpaymentAmt / priceNum) * 100).toFixed(2);
@@ -58,8 +64,6 @@
       percentagePrincipal,
     });
   }
-
-  console.log(propertyData);
 </script>
 
 <div class="container">
@@ -221,7 +225,7 @@
             style: 'currency',
             currency: 'SGD',
             minimumFractionDigits: 2,
-          }).format(+loanAmount)} Loan Amount<br />at {loanPercentage}% Loan-to-Amount
+          }).format(+loanAmountVal)} Loan Amount<br />at {loanPercentage}% Loan-to-Amount
         </p>
       </div>
     </div>
@@ -267,7 +271,13 @@
     </div>
   </form>
 
-  <div />
+  {#if isOwner}
+    <BoostListing
+      supabase={data.supabase}
+      propertyId={data.propertyData.id}
+      userId={data.propertyData.seller_id}
+    />
+  {/if}
 </div>
 
 <style lang="scss">

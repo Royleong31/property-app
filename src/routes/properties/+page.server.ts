@@ -27,11 +27,13 @@ export const load = async ({ url, locals }) => {
     bedrooms = +bedroomsString;
   }
 
+  // sorted by boosting amount then by created_at
   let queryBuilder = locals.supabase
     .from('property_for_sale')
     .select(
       'id, property_images (image_url), price, no_of_bedrooms, no_of_bathrooms, floor_area, street_name, unit_number',
     )
+    .order('boosting_rank', { ascending: false })
     .order('created_at', { ascending: false });
 
   if (location) {

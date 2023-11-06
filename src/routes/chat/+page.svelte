@@ -156,63 +156,67 @@
   </div>
 
   <div class="right">
-    <div class="nameContainer">
-      <img src={currentChat?.avatarImg} alt="" class="profilePic" />
-      <p class="name">{currentChat?.otherPersonName}</p>
-    </div>
+    {#if currentChat}
+      <div class="nameContainer">
+        <img src={currentChat?.avatarImg} alt="" class="profilePic" />
+        <p class="name">{currentChat?.otherPersonName}</p>
+      </div>
 
-    <div class="scrollContainer">
-      <div class="houseDetails">
-        <img src={currentChat?.propertyImg} alt="" class="photo" />
+      <div class="scrollContainer">
+        <div class="houseDetails">
+          <img src={currentChat?.propertyImg} alt="" class="photo" />
 
-        <div class="details">
-          <h3 class="name">{currentChat?.streetName}</h3>
-          <p class="price">
-            S{new Intl.NumberFormat('en-SG', {
-              style: 'currency',
-              currency: 'SGD',
-              maximumFractionDigits: 0,
-            }).format(currentChat?.price ?? 0)}
-          </p>
+          <div class="details">
+            <h3 class="name">{currentChat?.streetName}</h3>
+            <p class="price">
+              S{new Intl.NumberFormat('en-SG', {
+                style: 'currency',
+                currency: 'SGD',
+                maximumFractionDigits: 0,
+              }).format(currentChat?.price ?? 0)}
+            </p>
 
-          <div class="detailContainer">
-            <div class="detail">
-              <p class="detailText">{currentChat?.bedroomCount} bed</p>
-            </div>
-            <div class="detail">
-              <p class="detailText">{currentChat?.area} sqm</p>
-            </div>
-            <div class="detail">
-              <p class="detailText">
-                S{new Intl.NumberFormat('en-SG', {
-                  style: 'currency',
-                  currency: 'SGD',
-                  minimumFractionDigits: 2,
-                }).format((currentChat?.price ?? 0) / (currentChat?.area ?? 1))} psm
-              </p>
+            <div class="detailContainer">
+              <div class="detail">
+                <p class="detailText">{currentChat?.bedroomCount} bed</p>
+              </div>
+              <div class="detail">
+                <p class="detailText">{currentChat?.area} sqm</p>
+              </div>
+              <div class="detail">
+                <p class="detailText">
+                  S{new Intl.NumberFormat('en-SG', {
+                    style: 'currency',
+                    currency: 'SGD',
+                    minimumFractionDigits: 2,
+                  }).format((currentChat?.price ?? 0) / (currentChat?.area ?? 1))} psm
+                </p>
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="chat">
+          {#each currentChat?.messages ?? [] as message}
+            <div
+              class="message {message.sender_id === $authStore?.id
+                ? 'messageRight'
+                : 'messageLeft'}"
+            >
+              <p class="text">{message.message}</p>
+              <p class="time">{message.created_at}</p>
+            </div>
+          {/each}
+        </div>
       </div>
 
-      <div class="chat">
-        {#each currentChat?.messages ?? [] as message}
-          <div
-            class="message {message.sender_id === $authStore?.id ? 'messageRight' : 'messageLeft'}"
-          >
-            <p class="text">{message.message}</p>
-            <p class="time">{message.created_at}</p>
-          </div>
-        {/each}
-      </div>
-    </div>
-
-    <form class="textInput" on:submit|preventDefault={sendMessageHandler}>
-      <img src="{base}/icons/file.svg" alt="" class="icon" />
-      <input placeholder="Write your message" bind:value={textMessage} rows={1} />
-      <img src="{base}/icons/camera.svg" alt="" class="icon" />
-      <img src="{base}/icons/microphone.svg" alt="" class="icon" />
-    </form>
+      <form class="textInput" on:submit|preventDefault={sendMessageHandler}>
+        <img src="{base}/icons/file.svg" alt="" class="icon" />
+        <input placeholder="Write your message" bind:value={textMessage} rows={1} />
+        <img src="{base}/icons/camera.svg" alt="" class="icon" />
+        <img src="{base}/icons/microphone.svg" alt="" class="icon" />
+      </form>
+    {/if}
   </div>
 </div>
 

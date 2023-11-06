@@ -24,6 +24,7 @@ interface PropertyDetails {
   phone_number: string;
   email: string;
   postal_code: string;
+  seller_id: string;
   type_of_property: PropertyType;
   floor_level: string;
 }
@@ -36,7 +37,6 @@ export const load = async ({ params, locals }) => {
     .eq('id', params.slug)
     .single();
 
-  console.log(result);
   return {
     propertyData: {
       ...result.data,

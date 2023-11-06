@@ -34,11 +34,15 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@paypal/paypal-js": "^7.0.3",
 		"@supabase/auth-helpers-sveltekit": "^0.10.4",
 		"@supabase/auth-ui-shared": "^0.1.8",
 		"@supabase/auth-ui-svelte": "^0.2.7",
 		"@supabase/supabase-js": "^2.38.4",
+		"@types/qs": "^6.9.9",
+		"axios": "^1.6.0",
 		"frappe-charts": "^1.6.2",
+		"qs": "^6.11.2",
 		"svelte-frappe-charts": "^1.10.0",
 		"sveltekit-search-params": "^1.0.15"
 	}
