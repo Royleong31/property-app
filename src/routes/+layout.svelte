@@ -89,9 +89,18 @@
   </main>
 
   {#if modalType === ModalType.LOGIN}
-    <LoginModal {supabase} redirectUrl={`${originUrl}/auth/callback`} on:close={onClose} />
+    <LoginModal
+      {supabase}
+      redirectUrl={`${originUrl}/auth/callback`}
+      on:close={onClose}
+      openRegisterHandler={() => (modalType = ModalType.REGISTER)}
+    />
   {:else if modalType === ModalType.REGISTER}
-    <RegisterModal {supabase} on:close={onClose} />
+    <RegisterModal
+      {supabase}
+      on:close={onClose}
+      openLoginHandler={() => (modalType = ModalType.LOGIN)}
+    />
   {:else if modalType === ModalType.CHANGE_PASSWORD}
     <ChangePasswordModal {supabase} on:close={onClose} />
   {/if}

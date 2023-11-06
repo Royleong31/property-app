@@ -35,7 +35,9 @@
   $: chatId = $page.url.searchParams.get('chatId') ?? '';
 
   export let data;
+  export let openLoginHandler: () => void;
   const supabase = data.supabase;
+
   let chats: ChatMessage[] = [];
 
   authStore.subscribe(async val => {

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { SupabaseClient } from '@supabase/supabase-js';
   import BoostModal from '../modals/BoostModal.svelte';
+  import { goto } from '$app/navigation';
 
   export let supabase: SupabaseClient;
   export let propertyId: string;
@@ -26,13 +27,13 @@
         .eq('id', propertyId);
       console.log(result1);
       showBoostModal = false;
+      alert('Boosting successful!');
+      goto('/properties');
     } catch (error) {
       console.log(error);
       alert('something went wrong');
     }
   };
-
-  console.log(propertyId, userId);
 </script>
 
 <input type="text" bind:value={amtInput} class="amtInput" />

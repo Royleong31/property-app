@@ -1,6 +1,7 @@
 <script lang="ts">
   import DisplayImage from '../../components/forms/DisplayImage.svelte';
   import authStore from '$lib/store/auth';
+  import { goto } from '$app/navigation';
 
   export let data;
   $: ({ supabase } = data);
@@ -76,6 +77,8 @@
         alert('something went wrong, please try again');
       }
     }
+
+    goto('/');
   };
 
   const selectFacility = (facility: Facilities) => {
@@ -284,8 +287,13 @@
 
   .submit {
     grid-column: 1 / -1;
-    padding: 5px 10px;
-    background: gray;
+    padding: 10px 10px;
+    background: #bc6c25;
+    margin-bottom: 50px;
+    color: white;
+    &:disabled {
+      background: gray;
+    }
     border-radius: 6px;
     cursor: pointer;
   }

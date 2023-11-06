@@ -12,6 +12,7 @@
   let errorMsg = '';
   export let supabase: SupabaseClient;
   export let redirectUrl: string;
+  export let openRegisterHandler: () => void;
 
   function closeModal() {
     dispatch('close');
@@ -44,9 +45,9 @@
     {/if}
 
     <p class="loginFooterText">
-      If you already have an account, please do log in
+      If you do not have an account, please register
       <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <span class="loginFooterLink" on:click={() => {}}>here</span>
+      <span class="loginFooterLink" on:click={openRegisterHandler}>here</span>
     </p>
   </form>
 </Modal>
@@ -98,7 +99,7 @@
 
     .loginFooterLink {
       cursor: pointer;
-      color: blue;
+      color: #bc6c25;
     }
   }
   .error {

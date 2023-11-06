@@ -21,8 +21,6 @@
   let percentageInterest = '0';
   let loanAmountVal = '0';
 
-  let showBoostModal = false;
-
   $: isOwner = $authStore?.id === propertyData.seller_id;
 
   function capitalizeFirstLetter(input: string) {

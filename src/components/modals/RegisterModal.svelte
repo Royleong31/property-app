@@ -9,6 +9,7 @@
   let password = '';
   let confirmPassword = '';
   export let supabase: SupabaseClient;
+  export let openLoginHandler: () => void;
 
   const dispatch = createEventDispatcher();
   let errorMsg = '';
@@ -37,6 +38,8 @@
         phone_number: phoneNumber,
         id: data.user.id,
       });
+
+      alert('Registration successful!');
 
       closeModal();
       return;
@@ -73,9 +76,9 @@
       <p class="error">{errorMsg}</p>
     {/if}
     <p class="loginFooterText">
-      If you already have an account, please do log in
+      If you already have an account, please log in
       <!-- svelte-ignore a11y-no-static-element-interactions -->
-      <span class="loginFooterLink" on:click={() => {}}>here</span>
+      <span class="loginFooterLink" on:click={openLoginHandler}>here</span>
     </p>
   </form>
 </Modal>
@@ -126,7 +129,7 @@
 
     .loginFooterLink {
       cursor: pointer;
-      color: #283618;
+      color: #bc6c25;
     }
   }
   .error {
