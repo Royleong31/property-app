@@ -2,6 +2,7 @@
   import type { SupabaseClient } from '@supabase/supabase-js';
   import Modal from './Modal.svelte';
   import { createEventDispatcher } from 'svelte';
+  import GoogleLoginBtn from '../forms/GoogleLoginBtn.svelte';
 
   let fullName = '';
   let phoneNumber = '';
@@ -70,6 +71,7 @@
     />
 
     <button class="submitBtn" type="submit">Register</button>
+    <GoogleLoginBtn {supabase} />
 
     <hr class="divider" />
     {#if errorMsg}
@@ -112,8 +114,8 @@
     .submitBtn {
       background: #283618;
       border-radius: 6px;
-      width: max-content;
-      padding: 0.5rem 2rem;
+      width: 100%;
+      padding: 10px;
       color: white;
       align-self: center;
     }

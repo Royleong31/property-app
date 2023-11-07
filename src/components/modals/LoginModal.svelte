@@ -4,6 +4,7 @@
   import type { SupabaseClient } from '@supabase/supabase-js';
   import { ThemeSupa } from '@supabase/auth-ui-shared';
   import { createEventDispatcher } from 'svelte';
+  import GoogleLoginBtn from '../forms/GoogleLoginBtn.svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -38,6 +39,7 @@
 
     <button class="submitBtn" type="submit">Log In</button>
 
+    <GoogleLoginBtn {supabase} />
     <hr class="divider" />
 
     {#if errorMsg}
@@ -81,8 +83,8 @@
     .submitBtn {
       background: #283618;
       border-radius: 6px;
-      width: max-content;
-      padding: 0.5rem 2rem;
+      width: 100%;
+      padding: 10px;
       color: white;
       align-self: center;
     }
