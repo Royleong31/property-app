@@ -27,6 +27,34 @@
     return input.charAt(0).toUpperCase() + input.slice(1);
   }
 
+  $: propertyPriceErrMsg =
+    price !== '' && +price < 200000
+      ? 'Your property price must be at least $200000'
+      : +price > 100000000
+      ? 'Your property price must be less than $100000000'
+      : '';
+
+  $: loanAmtErrMsg =
+    loanAmount !== '' && +loanAmount < 100000
+      ? 'Your loan amount must be at least $100000'
+      : +loanAmount / +price > 0.75
+      ? 'Your loan amount cannot be more than 75% of your property value'
+      : '';
+
+  $: interestRateErrMsg =
+    interestRate !== '' && +interestRate < 0.5
+      ? 'Your interest rate must be at least 0.5%'
+      : +interestRate > 10
+      ? 'Your interest rate must be less than 10%'
+      : '';
+
+  $: tenureErrMsg =
+    tenure !== '' && +tenure < 5
+      ? 'Your loan tenure cannot be less than 5 years'
+      : +tenure > 35
+      ? 'Your loan tenure cannot be more than 35 years'
+      : '';
+
   function submitHandler() {
     const priceNum = Number(price);
     const loanAmountNum = Number(loanAmount);
@@ -231,34 +259,38 @@
     <div class="mortgageInput">
       <div class="mortgageInputContainer fullWidthInput">
         <label for="price">Property Price</label>
-        <div class="inputContainer">
+        <div class="inputContainer {!!propertyPriceErrMsg ? 'errBorder' : ''}">
           <div class="unit"><p>S$</p></div>
           <input type="text" id="price" bind:value={price} />
         </div>
+        <p class="errLabel">{propertyPriceErrMsg}</p>
       </div>
 
       <div class="mortgageInputContainer fullWidthInput">
         <label for="loan">Loan Amount</label>
-        <div class="inputContainer">
+        <div class="inputContainer {!!loanAmtErrMsg ? 'errBorder' : ''}">
           <div class="unit"><p>S$</p></div>
           <input type="text" id="loan" bind:value={loanAmount} />
         </div>
+        <p class="errLabel">{loanAmtErrMsg}</p>
       </div>
 
       <div class="mortgageInputContainer">
         <label for="interestRate">Interest Rate</label>
-        <div class="inputContainer">
+        <div class="inputContainer {!!interestRateErrMsg ? 'errBorder' : ''}">
           <div class="unit"><p>%</p></div>
           <input type="text" id="interestRate" bind:value={interestRate} />
         </div>
+        <p class="errLabel">{interestRateErrMsg}</p>
       </div>
 
       <div class="mortgageInputContainer">
         <label for="loanTenure">Loan Tenure</label>
-        <div class="inputContainer">
+        <div class="inputContainer {!!tenureErrMsg ? 'errBorder' : ''}">
           <div class="unit"><p>Yrs</p></div>
           <input type="text" id="loanTenure" bind:value={tenure} />
         </div>
+        <p class="errLabel">{tenureErrMsg}</p>
       </div>
 
       <button
@@ -550,6 +582,19 @@
           padding: 0 10px;
           font-size: 20px;
         }
+
+        &.errBorder {
+          border: 2px solid red;
+
+          & > .unit {
+            border-left: none;
+            border-top: none;
+            border-bottom: none;
+          }
+        }
+      }
+      .errLabel {
+        color: red;
       }
     }
 
