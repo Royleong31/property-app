@@ -295,8 +295,14 @@
 
       <button
         class="calculateBtn"
-        disabled={price === '' || loanAmount === '' || interestRate === '' || tenure === ''}
-        >Calculate</button
+        disabled={price === '' ||
+          loanAmount === '' ||
+          interestRate === '' ||
+          tenure === '' ||
+          !!propertyPriceErrMsg ||
+          !!loanAmtErrMsg ||
+          !!interestRateErrMsg ||
+          !!tenureErrMsg}>Calculate</button
       >
     </div>
   </form>
