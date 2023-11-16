@@ -2,7 +2,7 @@
   import Chart from 'svelte-frappe-charts';
   import LandingComponent from '../../components/LandingComponent.svelte';
   import Layout from '../+layout.svelte';
-  const bedroomSelectOptions = ['1', '2', '3', '4', '5', '6'];
+  const bedroomSelectOptions = ['1', '2', '3', '4', '5'];
 
   const towns = [
     'ang mo kio',
@@ -65,64 +65,65 @@
   let predictedPrice = 0;
 
   let town = towns[0];
-  let room = 4;
+  let room = bedroomSelectOptions[2];
   // 165.22.109.188
-  const base_url = 'http://167.71.194.141';
+  const base_url = 'http://157.230.242.109';
   $: {
-    fetch(`${base_url}/estimate_price`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        town,
-        num_rooms: +room,
-      }),
-    })
-      .then(res => res.json())
-      .then(res => {
-        predictedPrice = res.predicted_price;
-      });
-
-    fetch(`${base_url}/get_prices`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        town,
-        num_rooms: +room,
-      }),
-    })
-      .then(res => res.json())
-      .then(res => {
-        const labels: string[] = [];
-        const datasets: { values: number[] }[] = [{ values: [] }];
-
-        res.past_prices.forEach((val: any) => {
-          if (!isNaN(val.price)) {
-            labels.push(val.quarter);
-            datasets[0].values.push(val.price);
-          }
+    try {
+      fetch(`${base_url}/estimate_price`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          town,
+          num_rooms: +room,
+        }),
+      })
+        .then(res => res.json())
+        .then(res => {
+          predictedPrice = res.predicted_price;
         });
 
-        console.log(labels, datasets[0].values);
-
-        data = {
-          labels,
-          datasets,
-        };
+      fetch(`${base_url}/get_prices?town=${town}&num_rooms=${+room}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .catch(() => {
-        data = {
-          labels: [],
-          datasets: [
-            {
-              values: [],
-            },
-          ],
-        };
-      });
+        .then(res => res.json())
+        .then(res => {
+          const labels: string[] = [];
+          const datasets: { values: number[] }[] = [{ values: [] }];
+
+          res.past_prices.forEach((val: any) => {
+            if (!isNaN(val.price)) {
+              labels.push(val.quarter);
+              datasets[0].values.push(val.price);
+            }
+          });
+
+          console.log(labels, datasets[0].values);
+
+          data = {
+            labels,
+            datasets,
+          };
+        })
+        .catch(() => {
+          data = {
+            labels: [],
+            datasets: [
+              {
+                values: [],
+              },
+            ],
+          };
+        });
+    } catch (error) {
+      console.log('error occred');
+      console.log(error);
+    }
   }
 </script>
 

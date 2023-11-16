@@ -46,10 +46,12 @@
         </a>
 
         <a href="/properties">Properties</a>
-        <a href="/sell">Sell</a>
-        <a href="/chat">Chat</a>
         <a href="/prediction">Prediction</a>
-        <a href="/likes">Likes</a>
+        {#if $authStore}
+          <a href="/sell">Sell</a>
+          <a href="/chat">Chat</a>
+          <a href="/likes">Likes</a>
+        {/if}
       </div>
 
       <div class="headerRightContainer">
