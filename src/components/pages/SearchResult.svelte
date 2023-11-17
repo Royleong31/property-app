@@ -119,7 +119,7 @@
           style: 'currency',
           currency: 'SGD',
           minimumFractionDigits: 0,
-        }).format(price / area)}
+        }).format(price)}
       </p>
 
       <div class="infoContainer">
