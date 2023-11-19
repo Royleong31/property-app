@@ -67,7 +67,10 @@
   let town = towns[0];
   let room = bedroomSelectOptions[2];
   // 165.22.109.188
-  const base_url = 'http://165.22.61.251';
+  // const base_url = 'http://165.22.61.251';
+  // const base_url = 'http://localhost';
+  const base_url = 'http://139.59.127.225';
+
   $: {
     try {
       fetch(`${base_url}/estimate_price`, {
